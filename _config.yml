@@ -1,0 +1,14 @@
+# Site settings
+title: 아무도 왜 안알랴줌?
+# email: your-email@domain.com
+description: > # this means to ignore newlines until "baseurl:"
+  기계학습 블로그. 데이터, 학습, 성공적.
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://nzer0.github.io" # the base hostname & protocol for your site
+twitter_username: nzer0
+github_username:  nzer0
+
+# Build settings
+markdown: kramdown
+kramdown: 
+  input: GFM

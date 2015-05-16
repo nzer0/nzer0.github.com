@@ -1,0 +1,19 @@
+---
+layout: post
+title: test log
+---
+
+## So is this working?
+
+
+*hi*
+
+what about $$ y=x $$ this is inline?
+
+$$
+\begin{align}
+z=y
+\end{align}
+$$
+
+not?
