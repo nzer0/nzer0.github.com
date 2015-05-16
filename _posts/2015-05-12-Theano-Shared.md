@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Theano, 헷갈리는 shared variable 및 updates, givens 개념
+comments: true
 ---
 
 Theano를 처음 익힐 때 조금 헷갈리는 부분이 shared variable, 그리고 updates, givens 문법인데, 이런 문법이 굳이 왜 필요한지 의문이 들기 때문이다. [여기 링크](http://deeplearning.net/software/theano/tutorial/examples.html)에 설명이 잘 돼있긴 하지만 좀 더 정리해본다.
