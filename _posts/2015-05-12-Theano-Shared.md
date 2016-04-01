@@ -24,28 +24,30 @@ w^* = argmin_w  \Vert t-Xw \Vert^2, ~~~~where~~ X \in \mathbb{R}^{n \times d}, t
 를 생각해보자. 사실 이 문제는 Analytic Solution이 존재하지만 여기서는 예시를 위해 Gradient Descent Learning을 하는 것으로 생각한다. 우선 Theano가 권장하는 형태로는 아래와 같이 구현할 수 있다. 
 
 {% highlight python %}
+import numpy as np
 import theano.tensor as T
 import theano
+floatX = theano.config.floatX
 # Define symbolic variables
 X = T.matrix('X')
-w = theano.shared([0.1, 0.1], name='w')
+w = theano.shared(np.array([0.1, 0.1], dtype=floatX), name='w')
 t = T.vector('t')
 
 # Define Loss Expression
-L = (t-X*w)**2
+L = T.mean( (t - T.dot(X, T.reshape(w, (-1,1))) )**2 )
 
 # Calculate Gradient Expression
 dLdw = T.grad(L, w)
 
 # Compile the training function
 lr = 0.1
-data_X = theano.shared([[0.1, 0.2], [0.2, 0.3], [0.1, 0.4], [0.2, 0.4]])
-data_t = theano.shared([3, 3.5, 4, 4.2])
+data_X = theano.shared(np.array([[0.1, 0.2], [0.2, 0.3], [0.1, 0.4], [0.2, 0.4]], dtype=floatX))
+data_t = theano.shared(np.array([3, 3.5, 4, 4.2], dtype=floatX))
 calc_output = theano.function([], L, 
 		updates=[(w, w - lr*dLdw)], givens=[(X,data_X), (t,data_t)] )
 
 for epoch in xrange(100):
-	calc_output()
+	print( calc_output() )
 {% endhighlight %}
 
 위의 코드에서 `calc_output` 함수는 실행될 때마다 Gradient Descent에 따라 $$w$$를 업데이트하고, 계산 시 `X`, `t` 변수에 각각 해당되는 데이터를 대입하여 계산한다. 따라서, `calc_output()` 함수를 실행할 때마다 학습이 진행된다.
@@ -57,8 +59,8 @@ for epoch in xrange(100):
 Givens구문은 왜 필요할까? `calc_output` 사실 아래처럼 givens 없이 구현해도 되지 않는가?
 
 {% highlight python %}
-data_X = [[0.1, 0.2], [0.2, 0.3], [0.1, 0.4], [0.2, 0.4]]
-data_t = [3, 3.5, 4, 4.2]
+data_X = np.array([[0.1, 0.2], [0.2, 0.3], [0.1, 0.4], [0.2, 0.4]], dtype=floatX)
+data_t = np.array([3, 3.5, 4, 4.2], dtype=floatX)
 calc_output = theano.function([X,t], L, updates=[(w, w - lr*dLdw)])
 
 for epoch in xrange(100):
